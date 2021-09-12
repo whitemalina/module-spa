@@ -1,15 +1,18 @@
 <template>
   <div class="container-wrap">
     <div class="container">
-      <div class="container-title">Найденные рейсы</div>
-      hellohellohellohellohellohellohellohellohellohellohellohellohello <br><br><br><br><br><br>
+      <div class="container-title">{{title}}</div>
+        <slot></slot>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "container"
+  name: "container",
+  props: {
+    title: ""
+  }
 }
 </script>
 
@@ -18,7 +21,8 @@ export default {
   display: flex
   justify-content: center
   align-items: center
-  width: 100%
+  min-width: 30%
+  margin: 0 auto
   .container
     position: relative
     min-width: 10%

@@ -5,7 +5,11 @@
         <img src="img/logo.svg" alt="logo">
       </div>
       <div class="nav-menu">
-        <button @click="planes = []" class="btnb profile-signup">
+        <button @click="() => {
+          this.planes = [],
+          this.planesBack = []
+        }
+        " class="btnb profile-signup">
           Поиск
         </button>
       </div>
@@ -20,7 +24,66 @@
     </nav>
     <main>
       <transition name="fade-down">
-        <container v-if="planes.length > 0"></container>
+        <container v-if="planes.length > 0" title="Найденные рейсы">
+          <div :key="index" v-for="(item, index) in this.planes" @click="item.selected=!item.selected">
+            <div class="input-control">
+              <span class="input-pass">{{item.flight}} | {{item.aircraft}}</span>
+            </div>
+            <div v-model="selected" class="form-wrapper">
+              <div class="form-city">
+                <div class="form-from" v-bind:class="{ selected: item.selected}">
+
+                  <div class="title">{{item.date}}</div>
+                  <span class="input-from">{{item.time[0]}}:{{item.time[1]}} | {{item.cityFrom}}</span>
+                </div>
+                <div class="form-divider"></div>
+                <div class="form-to" v-bind:class="{ selected: item.selected}">
+                  <div class="title">{{item.date}}</div>
+                  <span class="input-from">{{item.arrivalTime[0]}}:{{item.arrivalTime[1]}} | {{item.cityTo}}</span>
+                </div>
+              </div>
+              <div class="form-dates" v-bind:class="{ selected: item.selected}">
+                <div class="form-dep">
+                  <div class="title">Время в пути</div>
+                  <span class="input-dep">{{item.flightTime}} ч</span>
+                </div>
+                <div class="form-back">
+                  <div class="title">Стоимость</div>
+                  <span class="input-back">{{item.cost}} ₽</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div :key="index" v-for="(item, index) in this.planesBack" @click="item.selected=!item.selected">
+            <div class="input-control">
+              <span class="input-pass">{{item.flight}} | {{item.aircraft}}</span>
+            </div>
+            <div v-model="selected" class="form-wrapper">
+              <div class="form-city" >
+                <div class="form-from" v-bind:class="{ selected: item.selected}">
+                  <div class="title">{{item.date}}</div>
+                  <span class="input-from">{{item.time[0]}}:{{item.time[1]}} | {{item.cityFrom}}</span>
+                </div>
+                <div class="form-divider"></div>
+                <div class="form-to" v-bind:class="{ selected: item.selected}">
+                  <div class="title">{{item.date}}</div>
+                  <span class="input-from">{{item.arrivalTime[0]}}:{{item.arrivalTime[1]}} | {{item.cityTo}}</span>
+                </div>
+              </div>
+              <div class="form-dates" v-bind:class="{ selected: item.selected}">
+                <div class="form-dep">
+                  <div class="title">Время в пути</div>
+                  <span class="input-dep">{{item.flightTime}} ч</span>
+                </div>
+                <div class="form-back">
+                  <div class="title">Стоимость</div>
+                  <span class="input-back">{{item.cost}} ₽</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <button @click="search" class="form-btn">Перейти к бронированию  <i class="arrow right"></i></button>
+        </container>
       </transition>
       <transition name="fade-down">
       <div v-if="planes.length === 0" class="title">
@@ -99,6 +162,8 @@
 </template>
 
 <style lang="sass">
+.selected
+  border: 2px solid #707070 !important
 .fade-down-enter-active, .fade-down-leave-active
   transition:  .5s
 
@@ -246,9 +311,6 @@ main
       .right
         transform: rotate(-45deg) translateY(-1px)
         margin-left: 10px
-
-
-
   .form-wrapper
     display: flex
     justify-content: start
@@ -306,12 +368,44 @@ main
           border: none
           border-bottom: 1px dashed #242424
           font-weight: 300
+          background: none
           &:focus
             outline: none
+.form-btn
+  background: #151515
+  color: white
+  padding: 15px 32px
+  border-radius: 10px
+  border: none
+  position: absolute
+  right: calc(35px + 1em)
+  bottom: 0
+  transform: translateY(50%)
+  &:hover
+    .arrow
+      transform: translateX(10px) rotate(-45deg) translateY(-1px)
+  .arrow
+    border: solid #ffffff
+    border-width: 0 3px 3px 0
+    display: inline-block
+    padding: 3px
+    transition: .3s
+  .right
+    transform: rotate(-45deg) translateY(-1px)
+    margin-left: 10px
 
 </style>
 <script>
 import Parallax from "parallax-js";
+
+var faker = require('faker');
+
+function getRandom(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
 export default {
   name: "index",
   components: {},
@@ -329,13 +423,55 @@ export default {
         dateBack: "",
         passenger: 1
       },
-      planes: []
+      planes: [],
+      planesBack: [],
+      selected: [],
+      aircrafts: ["Utair", "Pobeda", "S7"]
     };
   },
   methods : {
     search() {
-      this.planes = [...this.planes , '1']
+      for (let i = 0; i < getRandom(1, 3); i++) {
+        let time = [getRandom(10, 23), getRandom(10, 59)]
+        let flightTime = getRandom(1, 5)
+
+        this.planes = [...this.planes, {
+          flight: "Р" + getRandom(100, 999),
+          aircraft: this.aircrafts[getRandom(0, 2)],
+          time: time,
+          flightTime: flightTime,
+          cost: getRandom(10000, 19092) * this.searchInput.passenger,
+          arrivalTime: [time[0] + flightTime, time[1]],
+          selected: false,
+          from: this.searchInput.fromInput,
+          to: this.searchInput.toInput,
+          date: this.searchInput.dateTo,
+          cityTo: this.searchInput.toInput,
+          cityFrom: this.searchInput.fromInput
+        }]
+      }
+      if (this.searchInput.dateBack !== "") {
+        let time = [getRandom(10, 23), getRandom(10, 59)]
+        let flightTime = getRandom(1, 5)
+        for (let i = 0; i < getRandom(1, 3); i++) {
+          this.planesBack = [...this.planesBack, {
+            flight: "Р" + getRandom(100, 999),
+            aircraft: this.aircrafts[getRandom(0, 2)],
+            time: time,
+            flightTime: flightTime,
+            cost: getRandom(10000, 19092) * this.searchInput.passenger,
+            arrivalTime: [time[0] + flightTime, time[1]],
+            selected: false,
+            from: this.searchInput.toInput,
+            to: this.searchInput.fromInput,
+            date: this.searchInput.dateBack,
+            cityFrom: this.searchInput.toInput,
+            cityTo: this.searchInput.fromInput
+          }]
+        }
+      }
     }
+
   },
   mounted() {
     let scene = document.getElementById("scene");
