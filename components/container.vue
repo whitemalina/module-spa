@@ -2,7 +2,7 @@
   <div class="container-wrap">
     <div class="container">
       <div class="container-title">Найденные рейсы</div>
-      hello <br><br><br><br><br><br>
+      hellohellohellohellohellohellohellohellohellohellohellohellohello <br><br><br><br><br><br>
     </div>
   </div>
 </template>
@@ -14,9 +14,14 @@ export default {
 </script>
 
 <style lang="sass" scoped>
+.container-wrap
+  display: flex
+  justify-content: center
+  align-items: center
+  width: 100%
   .container
     position: relative
-    min-width: 50%
+    min-width: 10%
     display: inline-block
     border-radius: 25px
     padding: 35px 35px 50px
