@@ -24,7 +24,6 @@
       </transition>
       <transition name="fade-down">
       <div v-if="planes.length === 0" class="title">
-        <!--            Lorem ipsum <br> ipsum-->
         Поиск и покупка <br> авиабилетов
       </div>
       </transition>

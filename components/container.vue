@@ -1,7 +1,9 @@
 <template>
-  <div class="container">
-    <div class="container-title">Найденные рейсы</div>
-    hello <br><br><br><br><br><br>
+  <div class="container-wrap">
+    <div class="container">
+      <div class="container-title">Найденные рейсы</div>
+      hello <br><br><br><br><br><br>
+    </div>
   </div>
 </template>
 
