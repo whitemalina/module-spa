@@ -196,7 +196,15 @@
                Стоимость бронирования <br>
                <span>{{bookingCost}}</span> ₽
              </div>
-             <button @click="search" class="form-btn">Продолжить <i class="arrow right"></i></button>
+             <button @click="() => {
+          this.planes = []
+          this.planesBack = []
+          this.booking = false
+          this.bookingManage = false
+          this.signin = false
+          this.signup = false
+
+        }" class="form-btn">Продолжить <i class="arrow right"></i></button>
          </container>
           <container style="margin-top: 60px;" title="Пассажиры">
           <transition-group name="fade-up">
