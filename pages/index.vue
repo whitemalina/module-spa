@@ -1,182 +1,321 @@
 <template>
-  <div>
+  <div class="body">
+    <nav>
+      <div class="nav-logo">
+        <img src="img/logo.svg" alt="logo">
+      </div>
+      <div class="nav-menu">
+        <button @click="planes = []" class="btnb profile-signup">
+          Поиск
+        </button>
+      </div>
+      <div class="nav-profile">
+        <button class="btnb profile-signup">
+          Регистрация
+        </button>
+        <button class="btnb btnb-light profile-signin">
+          Вход
+        </button>
+      </div>
+    </nav>
+    <main>
+      <transition name="fade-down">
+        <container v-if="planes.length > 0"></container>
+      </transition>
+      <transition name="fade-down">
+      <div v-if="planes.length === 0" class="title">
+        <!--            Lorem ipsum <br> ipsum-->
+        Поиск и покупка <br> авиабилетов
+      </div>
+      </transition>
+      <transition name="fade-up">
+      <div v-if="planes.length === 0" class="search-wrapper">
+        <div class="search-container">
+
+         <div class="input-control">
+           <select class="input-pass"  v-model="searchInput.passenger">
+             <option value="1" >
+               1 пассажир
+             </option>
+             <option value="2">
+               2 пассажира
+             </option>
+             <option value="3">
+               3 пассажира
+             </option>
+             <option value="4">
+               4 пассажира
+             </option>
+             <option value="5">
+               5 пассажиров
+             </option>
+             <option value="6">
+               6 пассажиров
+             </option>
+             <option value="7">
+               7 пассажиров
+             </option>
+             <option value="8">
+               8 пассажиров
+             </option>
+           </select>
+         </div>
+          <div class="form-wrapper">
+            <div class="form-city">
+              <div class="form-from">
+                <div class="title">ОТКУДА</div>
+                <input type="text" v-model="searchInput.fromInput" class="input-from">
+              </div>
+              <div class="form-divider"></div>
+              <div class="form-to">
+                <div class="title">КУДА</div>
+                <input type="text" v-model="searchInput.toInput" class="input-to">
+              </div>
+            </div>
+            <div class="form-dates">
+              <div class="form-dep">
+                <div class="title">ТУДА</div>
+                <input type="date" v-model="searchInput.dateTo" class="input-dep">
+              </div>
+              <div class="form-back">
+                <div class="title">ОБРАТНО</div>
+                <input type="date" v-model="searchInput.dateBack" class="input-back">
+              </div>
+            </div>
+          </div>
+          <button @click="search" class="form-btn">Найти билеты   <i class="arrow right"></i></button>
+        </div>
+      </div>
+      </transition>
+    </main>
     <div data-relative-input="true" id="scene">
-      <div data-depth="0.9" class="bg-cloud-wrapp">
-        <img
-          :style="
-            'transform: translateY(' +
-              bgVars.offsetY +
-              '%) translateX(-50%);filter: brightness(' +
-              (bgVars.filter - 0.2) +
-              ');'
-          "
-          class="bg-cloud"
-          src="img/wave1.svg"
-          alt=""
-        />
+      <div data-depth="0.4" class="cool">
+        <img  src="img/bg.svg" alt="bg">
       </div>
-      <div data-depth="0.7" class="bg-cloud-wrapp">
-        <img
-          :style="
-            'transform:  translateY(' +
-              (bgVars.offsetY + 1) +
-              '%) translateX(-' +
-              (bgVars.offsetX + 15) +
-              '%);filter: brightness(' +
-              (bgVars.filter - 0.2) +
-              ');'
-          "
-          class="bg-cloud"
-          src="img/wave1.svg"
-          alt=""
-        />
-      </div>
-      <div data-depth="0.5" class="bg-cloud-wrapp">
-        <img
-          :style="
-            'transform:  translateY(' +
-              (bgVars.offsetY + 5) +
-              '%) translateX(-30%);filter: brightness(' +
-              (bgVars.filter - 0.1) +
-              ');'
-          "
-          class="bg-cloud"
-          src="img/wave1.svg"
-          alt=""
-        />
-      </div>
-      <div data-depth="0.4" class="bg-cloud-wrapp">
-        <img
-          :style="
-            'transform:  translateY(' +
-              (bgVars.offsetY + 5) +
-              '%) translateX(-' +
-              (bgVars.offsetX + 15) +
-              '%);filter: brightness(' +
-              (bgVars.filter - 0.2) +
-              ');'
-          "
-          class="bg-cloud"
-          src="img/wave1.svg"
-          alt=""
-        />
-      </div>
-    </div>
-    <div class="search-container ">
-      <div class="search-inputs d-flex">
-        <div class="input-control">
-        <b-form-input
-          class="search-input"
-          v-model="searchInput.fromInput"
-          placeholder="Из"
-        ></b-form-input></div>
-        <div class="input-control"><b-form-input
-          class="search-input"
-          v-model="searchInput.toInput"
-          placeholder="Куда"
-        ></b-form-input></div>
-        <div class="input-control"><b-form-datepicker
-          class="search-input"
-          v-model="searchInput.dateTo"
-          placeholder="Туда"
-        ></b-form-datepicker></div>
-        <div class="input-control"><b-form-datepicker
-          class="search-input"
-          v-model="searchInput.dateBack"
-          placeholder="Обратно"
-        ></b-form-datepicker></div>
-      </div>
-      <div class="p-05">
-        <b-button block variant="info" class="glass-button" >
-        ПОИСК
-        </b-button>
+      <div data-depth="0.2" class="cool cool-bottom">
+        <img  src="img/bg.svg" alt="bg-bottom">
       </div>
     </div>
   </div>
 </template>
 
-<style>
-#scene {
-  position: relative !important;
-  background-color: #21d4fd;
-  background-image: linear-gradient(19deg, #17b6ff 38%, #3d7ee9 100%);
+<style lang="sass">
+.fade-down-enter-active, .fade-down-leave-active
+  transition:  .5s
 
-  min-height: 100vh;
-  overflow: hidden !important;
-}
-.bg-cloud {
-  position: absolute !important;
-  bottom: 0;
-  left: 50%;
-  width: 200%;
-  opacity: 0.5;
-}
-.d-flex {
-  display: flex;
-  justify-content: space-between;
-  
-}
-.m-05 {
-  margin: 0.5em;  
+.fade-down-enter, .fade-down-leave-to
+  transform: translateY(-100%)
+  opacity: 0
 
-}
-.p-05 {
-  padding: 0.5em;  
+.fade-up-enter-active, .fade-up-leave-active
+  transition:  .5s
 
-}
-.search-container {
-  position: absolute;
-  padding: 2em;
-  left: 50%;
-  bottom : 20%;
-  transform: translateX(-50%);
-  background: rgba(255, 255, 255, 0.35);
+.fade-up-enter, .fade-up-leave-to
+  transform: translateY(100%)
+  opacity: 0
 
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  border-radius: 10px;
-  border: 1px solid rgba(255, 255, 255, 0.18);
 
-}
-.glass-button {
-   display: block;
-   padding:7px 14px;
-   border: 0;
-   text-decoration: none;
-   border-radius: 15px;
-   background-color: rgba(255, 255, 255, 0.034);
-   border: 1px solid rgba(255, 255, 255, 0.219);
-   backdrop-filter: blur(30px);
-   color: rgba(255, 255, 255, 0.904);
-   font-size: 14px;
-   letter-spacing: 2px;
-   font-weight: bold;
-   cursor: pointer;
-   text-transform: uppercase;
- }
-.search-input {
-  
-  display: block;
-}
-.input-control {
-  padding: 0.5em;  
-}
-.bg-cloud-wrapp {
-  position: absolute !important;
-  height: 100%;
-  width: 100%;
-  left: 0;
-  bottom: 0;
-}
+
+
+
+
+
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;700&display=swap')
+*
+  font-family: 'Oswald', sans-serif
+.body
+  position: relative
+  overflow: hidden
+  height: 100vh
+  background: rgba(40, 40, 40, 0.06)
+  #scene
+    position: absolute
+    top: 0
+    right: 0
+    width: 100vw
+    height: 100vh
+    z-index: -1
+    overflow: hidden
+    .cool
+      position: absolute
+      width: 100%
+      height: 100%
+      filter: blur(7px) saturate(200%)
+      opacity: 0.5
+      img
+        transform: translate(30%,-30%)
+      &-bottom
+        img
+          transform: translate(-10%,70%) rotate(180deg)
+
+    img
+      width: 100%
+      height: 100%
+.btnb
+  color: #303030
+  border-radius: 15px
+  font-weight: 400
+  font-size: 1.1em
+  padding: 5px 25px
+  margin: 0.3em
+  transition: 0.4s
+  background: none
+  border: 1px solid rgba(0, 0, 0, 0)
+  &:hover
+    color: rgba(0, 0, 0, 0.53)
+  &-light
+    border: 1px solid #303030
+
+nav
+  padding: 35px 60px
+  min-height: 60px
+  width: 100%
+  display: flex
+  align-items: center
+  justify-content: start
+  .nav-logo
+    img
+      max-height: 45px
+  .nav-profile
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    justify-content: center
+    margin-left: auto
+  .nav-menu
+    display: flex
+    align-items: center
+    flex-wrap: wrap
+    justify-content: center
+    margin-left: auto
+
+main
+  width: 100%
+  height: calc(100vh - 120px)
+  padding: 35px 75px
+  display: flex
+  flex-direction: column
+  align-items: start
+  justify-content: flex-start
+  .title
+    line-height: 50px
+    margin: 0.5em 1em
+    font-size: 3.5rem
+    color: rgba(41, 41, 41, 0.94)
+    font-weight: 500
+    position: absolute
+  .search-wrapper
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-top: auto
+    width: 100%
+    padding: 1em 1em 5em 1em
+
+  .search-container
+    position: relative
+    min-width: 50%
+    display: inline-block
+    border-radius: 25px
+    padding: 35px 35px 50px
+    background: rgba(255, 255, 255, 0.85)
+    .input-pass
+      background: none
+      border: none
+      font-weight: 300
+      color:  #707070
+      margin-bottom: 5px
+    .form-btn
+      background: #151515
+      color: white
+      padding: 15px 32px
+      border-radius: 10px
+      border: none
+      position: absolute
+      right: calc(35px + 1em)
+      bottom: 0
+      transform: translateY(50%)
+      &:hover
+        .arrow
+          transform: translateX(10px) rotate(-45deg) translateY(-1px)
+      .arrow
+        border: solid #ffffff
+        border-width: 0 3px 3px 0
+        display: inline-block
+        padding: 3px
+        transition: .3s
+      .right
+        transform: rotate(-45deg) translateY(-1px)
+        margin-left: 10px
+
+
+
+  .form-wrapper
+    display: flex
+    justify-content: start
+    align-items: start
+    flex-wrap: wrap
+    .title
+      font-size: 0.8em
+      color: rgba(0, 0, 0, 0.73)
+      line-height: 1em
+      margin: 0 0 5px
+      font-weight: normal
+      position: relative
+
+    .form-city
+      text-align: left
+      display: flex
+      justify-content: start
+      align-items: start
+      margin-right: 1em
+      margin-top: 0.5em
+      .form-from,.form-to
+        border: 1px dashed #707070
+        border-radius: 10px
+        padding: 20px 70px 20px 25px
+        input
+          border: none
+          border-bottom: 1px dashed #242424
+          transition: .5s
+
+          background: none
+          &:focus
+            outline: none
+            border-bottom: 1px solid #242424
+      .form-divider
+        width: 20px
+
+        background: #323131
+        height: 1px
+        margin: auto 0
+
+
+    .form-dates
+      margin-right: 1em
+      border-radius: 10px
+      border: 1px dashed #707070
+      background: none
+      margin-top: 0.5em
+      text-align: left
+      display: flex
+      justify-content: start
+      align-items: start
+      .form-dep,.form-back
+        padding: 20px 20px 20px 25px
+        input
+          border: none
+          border-bottom: 1px dashed #242424
+          font-weight: 300
+          &:focus
+            outline: none
+
 </style>
 <script>
 import Parallax from "parallax-js";
-import navbar from "@/components/navbar";
 export default {
   name: "index",
-  components: {
-    navbar
-  },
+  components: {},
   data() {
     return {
       bgVars: {
@@ -189,9 +328,15 @@ export default {
         toInput: "",
         dateTo: "",
         dateBack: "",
-        passenger: ""
-      }
+        passenger: 1
+      },
+      planes: []
     };
+  },
+  methods : {
+    search() {
+      this.planes = [...this.planes , '1']
+    }
   },
   mounted() {
     let scene = document.getElementById("scene");

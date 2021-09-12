@@ -1,0 +1,36 @@
+<template>
+  <div class="container">
+    <div class="container-title">Найденные рейсы</div>
+    hello <br><br><br><br><br><br>
+  </div>
+</template>
+
+<script>
+export default {
+  name: "container"
+}
+</script>
+
+<style lang="sass" scoped>
+  .container
+    position: relative
+    min-width: 50%
+    display: inline-block
+    border-radius: 25px
+    padding: 35px 35px 50px
+    background: rgba(255, 255, 255, 0.85)
+    z-index: 2
+    .container-title
+      position: absolute
+      top: 0
+      left: 35px
+      padding: 15px 25px
+      border-radius: 15px 15px 0 0
+      z-index: 1
+      transform: translateY(-100%)
+      background: rgba(255, 255, 255, 0.57)
+      transition: .3s
+    &:hover
+      .container-title
+        transform: translateY(-95%)
+</style>
